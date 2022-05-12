@@ -36,7 +36,7 @@ function App() {
 
 
   // useEffect
-  
+
   useEffect(() => {
       searchMovies("Iron man");
   }, []);
@@ -76,7 +76,7 @@ function App() {
             movies.map((movie, index) => <MovieCard movie={movie} key={index} />)) 
           : <div>empty</div>
         }
-
+ 
       </main>
 
       
