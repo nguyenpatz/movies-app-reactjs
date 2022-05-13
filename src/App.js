@@ -29,15 +29,19 @@ function App() {
 
     const data = await datas.json();
 
-    console.log(data.Search);
+    // console.log(data.Search);
+    // console.log(data);
+    if(data.Search) {
 
     setMovies(data.Search);
 
     setMovieName(""); // when click search input, state movieName is empty
+    }
+    
   }
 
   const selectYear = () => {
-    if(year !== "Select") {
+    if(year !== "all") {
       setFilterMovie(movies.filter(movie => movie.Year === year));
     }
     else {
@@ -61,7 +65,7 @@ function App() {
   }, [movies,year]);
 
   useEffect(() => {
-    setYear("Select");
+    setYear("all");
   }, [movies]);
 
  
@@ -76,19 +80,15 @@ function App() {
 
         <div className="header-searchbox">
           <input className="search-input" value={movieName} onChange={(e) => setMovieName(e.target.value)} type="text" placeholder="Search for movies" />
-          {<img src={SearchIcon} alt="" className="search-img" onClick={() => searchMovies(movieName !== "" ? movieName : "Iron man" )}/>}
+          {<img src={SearchIcon} alt="" className="search-img" onClick={() => searchMovies(movieName)}/>}
         </div>   
+
+        <section className="year-container">
+          <YearSelector setYear={setYear} year={year}movies={movies}/>
+        </section>
       </header>
 
-      <section>
-        <label htmlFor="years">Years</label>
-        <select id="years" onChange={(e) => setYear(e.target.value)}>
-          <option value="Select">Select</option>
-        {
-          movies.map((movie, index) => <YearSelector setYear={setYear} movie={movie} key={index}/>)
-        }
-        </select>
-      </section>
+      
 
       <main className="movie-container">
         {
@@ -96,6 +96,8 @@ function App() {
             filterMovies.map((movie, index) => <MovieCard movie={movie} key={index} />)) 
           : <div>empty</div>
         }
+
+
  
       </main>
 
