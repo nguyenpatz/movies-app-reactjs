@@ -18,7 +18,9 @@ function App() {
 
   const [movieName, setMovieName] = useState("");
 
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState("Select");
+
+  const [filterMovies, setFilterMovie] = useState([]);
 
   const searchMovies = async (title) => {
 
@@ -34,6 +36,14 @@ function App() {
     setMovieName(""); // when click search input, state movieName is empty
   }
 
+  const selectYear = () => {
+    if(year !== "Select") {
+      setFilterMovie(movies.filter(movie => movie.Year === year));
+    }
+    else {
+      setFilterMovie(movies.filter(movie => movie.Year !== ""));
+    }
+  }
 
   // useEffect
 
@@ -41,11 +51,20 @@ function App() {
       searchMovies("Iron man");
   }, []);
 
+// use this when no button search. input always search when you are typing
   // useEffect(() => {
   //   searchMovies(movieName);
   // }, [movieName]);
 
+  useEffect(() => {
+    selectYear();
+  }, [movies,year]);
 
+  useEffect(() => {
+    setYear("Select");
+  }, [movies]);
+
+ 
   return (
     <div className="containter">
 
@@ -57,13 +76,14 @@ function App() {
 
         <div className="header-searchbox">
           <input className="search-input" value={movieName} onChange={(e) => setMovieName(e.target.value)} type="text" placeholder="Search for movies" />
-          {<img src={SearchIcon} alt="" className="search-img" onClick={() => searchMovies(movieName)}/>}
+          {<img src={SearchIcon} alt="" className="search-img" onClick={() => searchMovies(movieName !== "" ? movieName : "Iron man" )}/>}
         </div>   
       </header>
 
       <section>
         <label htmlFor="years">Years</label>
-        <select id="years">
+        <select id="years" onChange={(e) => setYear(e.target.value)}>
+          <option value="Select">Select</option>
         {
           movies.map((movie, index) => <YearSelector setYear={setYear} movie={movie} key={index}/>)
         }
@@ -72,8 +92,8 @@ function App() {
 
       <main className="movie-container">
         {
-           movies?.length > 0 ? (
-            movies.map((movie, index) => <MovieCard movie={movie} key={index} />)) 
+           filterMovies?.length > 0 ? (
+            filterMovies.map((movie, index) => <MovieCard movie={movie} key={index} />)) 
           : <div>empty</div>
         }
  
@@ -83,7 +103,7 @@ function App() {
 
       <footer className="footer">
         <p>nguyenpat</p>
-        <a href="https://github.com/nguyenpatz" className="footer-github" >
+        <a href="https://github.com/nguyenpatz" className="footer-github" target="_blank">
           <img src={Github} alt="" />
         </a>
       </footer>
