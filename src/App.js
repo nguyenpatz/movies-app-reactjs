@@ -6,7 +6,7 @@ import SearchIcon from "./SearchIcon.svg";
 import Github from "./Github.svg";
 
 // key: 4159debf
-const API_URL = "http://www.omdbapi.com/?apikey=4159debf&";
+const API_URL = "https://www.omdbapi.com/?apikey=4159debf&";
 // http://www.omdbapi.com/?apikey=[yourkey]&
 // http://www.omdbapi.com/?t=spider+man&y=2019
 
